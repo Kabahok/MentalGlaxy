@@ -64,6 +64,21 @@ const siwper = new Swiper('.comment_container', {
 });
 
 
+function calcScroll() {
+    let div = document.createElement('div');
+
+    div.style.width = '50px';
+    div.style.height = '50px';
+    div.style.overflowY = 'scroll';
+    div.style.visibility = 'hidden';
+
+    document.body.appendChild(div);
+    let scrollWidth = div.offsetWidth - div.clientWidth;
+    div.remove();
+
+    return scrollWidth;
+}
+
 let modal = document.querySelector('.modal'),
     modalClose = document.querySelector('.modal_close'),
     overlay = document.querySelector('.overlay'),
@@ -72,15 +87,24 @@ let modal = document.querySelector('.modal'),
 trigBtn.addEventListener('click', () => {
     modal.classList.add('active');
     overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    let scroll = calcScroll();
+
+    document.body.style.marginRight = `${scroll}px`;
 });
 
 modalClose.addEventListener('click', (e) => {
     e.preventDefault();
     modal.classList.remove('active');
     overlay.classList.remove('active');
+    document.body.style.overflow = '';
+    document.body.style.marginRight = `0px`;
 });
 
 overlay.addEventListener('click', () => {
     modal.classList.remove('active');
     overlay.classList.remove('active');
+    document.body.style.overflow = '';
+    document.body.style.marginRight = `0px`;
 });
